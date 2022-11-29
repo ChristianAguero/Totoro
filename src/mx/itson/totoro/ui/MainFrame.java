@@ -35,6 +35,7 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         btnSAgregar = new javax.swing.JMenuItem();
+        btnEditar = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -67,6 +68,14 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         jMenu1.add(btnSAgregar);
+
+        btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
+        jMenu1.add(btnEditar);
 
         jMenuBar1.add(jMenu1);
 
@@ -121,11 +130,22 @@ public class MainFrame extends javax.swing.JFrame {
     
     private void btnSAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSAgregarActionPerformed
         
-        new Agregar(this, true).setVisible(true);
+        new Agregar(this, true, 0).setVisible(true);
         
         cargarTabla();
         
     }//GEN-LAST:event_btnSAgregarActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        
+        int renglon = tblAlumnos.getSelectedRow();
+       int idAlumno = Integer.parseInt( tblAlumnos.getModel().getValueAt(renglon, 0).toString());
+        
+        new Agregar(this, true, idAlumno).setVisible(true);
+        
+        cargarTabla();
+        
+    }//GEN-LAST:event_btnEditarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -163,6 +183,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem btnEditar;
     private javax.swing.JMenuItem btnSAgregar;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;

@@ -4,9 +4,6 @@
  */
 package mx.itson.totoro.ui;
 
-import java.awt.Color;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import javax.swing.JOptionPane;
 import mx.itson.totoro.entidades.Alumno;
 
@@ -15,13 +12,29 @@ import mx.itson.totoro.entidades.Alumno;
  * @author Christian
  */
 public class Agregar extends javax.swing.JDialog {
+    
+    int id;
 
     /**
      * Creates new form MainAgregar
      */
-    public Agregar(java.awt.Frame parent, boolean modal) {
+    public Agregar(java.awt.Frame parent, boolean modal, int id) {
         super(parent, modal);
         initComponents();
+        
+        this.id = id;
+        
+        if(id != 0){
+            
+            Alumno alumno = Alumno.obtenerPorId(id);
+            
+            txtNombre.setText(alumno.getNombre());
+            txtIdCia.setText(alumno.getIdCia());
+            txtApodo.setText(alumno.getApodo());
+            txtApellidos.setText(alumno.getApellidos());
+            
+        }
+        
     }
 
     /**
@@ -114,18 +127,21 @@ public class Agregar extends javax.swing.JDialog {
             String nombre = txtNombre.getText();
             String apellidos = txtApellidos.getText();
             String idCia = txtIdCia.getText();
-            String apodo = txtApodo.getText();
-            //Date fechaNacimiento =new SimpleDateFormat("dd/MM/yyyy").parse(txtFechaNacimiento.getText());  
-
-            boolean funco = new Alumno().guardar(nombre, apellidos, idCia, apodo);
+            String apodo = txtApodo.getText();  
+            
+            boolean funco = this.id == 0 ?
+                    new Alumno().guardar(nombre, apellidos, idCia, apodo):
+                    new Alumno().editar(this.id, nombre, apellidos, idCia, apodo);
 
             if(funco){
-
+                
                JOptionPane.showMessageDialog(this, "El registro fue exitoso", "Guardado", JOptionPane.INFORMATION_MESSAGE);
+               dispose();
 
             }else{
 
                 JOptionPane.showMessageDialog(this, "El registro fue exitoso", "Guardado", JOptionPane.ERROR_MESSAGE);
+                dispose();
 
             }
 
@@ -168,7 +184,7 @@ public class Agregar extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                Agregar dialog = new Agregar(new javax.swing.JFrame(), true);
+                Agregar dialog = new Agregar(new javax.swing.JFrame(), true, 0);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

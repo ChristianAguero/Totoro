@@ -103,6 +103,7 @@ public class Alumno {
                 
             }
             
+            conexion.close();
             
         }catch(Exception ex){
             
@@ -114,6 +115,14 @@ public class Alumno {
         
     }
     
+    /**
+     * Con este metodo se hace un nuevo registro de un alumno 
+     * @param nombre El nombre del alumno a guardar
+     * @param apellidos Los apellidos del alumno a guardar
+     * @param idCia ID del alumno a guardar
+     * @param apodo El apodo del alumno que se va a guardar
+     * @return Un tipo boolean que nos dice si el registro se completo exitosamente o no
+     */
     public boolean guardar(String nombre, String apellidos, String idCia, String apodo){
 
         boolean resultado = false;
@@ -126,7 +135,6 @@ public class Alumno {
             statement.setString(1, nombre);
             statement.setString(2, apellidos);
             statement.setString(3, idCia);
-           //statement.setDate(4, (java.sql.Date) fechaNacimiento);
             statement.setString(4, apodo);
             statement.execute();
             
@@ -142,6 +150,84 @@ public class Alumno {
         
         return resultado;
 
+    }
+    
+    /**
+     * Sirve para obtener los datos del alumno por su ID
+     * @param id El ID del alumno que queremos buscar
+     * @return Los datos del alumno a editar
+     */
+    public static Alumno obtenerPorId(int id){
+        
+        Alumno alumno = new Alumno();
+        
+        try{
+        
+            Connection conexion = Conexion.obtener();
+            PreparedStatement statement = conexion.prepareStatement("SELECT id, nombre, apellidos, idCia, fechaNacimiento, apodo FROM alumno WHERE id = ?");
+            statement.setInt(1, id);
+            
+            ResultSet resultSet = statement.executeQuery();
+            
+            while(resultSet.next() == true){
+                
+                alumno.setId(resultSet.getInt(1));
+                alumno.setNombre(resultSet.getString(2));
+                alumno.setApellidos(resultSet.getString(3));
+                alumno.setIdCia(resultSet.getString(4));
+                alumno.setFechaNacimiento(resultSet.getDate(5));
+                alumno.setApodo(resultSet.getString(6));
+                
+            }
+            
+            conexion.close();
+            
+        }catch(Exception ex){
+            
+            System.err.println("Ocurrio un error: " + ex.getMessage());
+            
+        }
+        
+        return alumno;
+        
+    }
+    
+    /**
+     * Con este metodo se edita un registro de un alumno 
+     * @param id El ID del alumno que se quiere editar
+     * @param nombre El nombre del alumno a editar
+     * @param apellidos Los apellidos del alumno a editar
+     * @param idCia ID del alumno a editar
+     * @param apodo El apodo del alumno que se va a editar
+     * @return Un tipo boolean que nos dice si el registro se completo exitosamente o no
+     */
+    public boolean editar (int id, String nombre, String apellidos, String idCia, String apodo){
+        
+        boolean resultado = false;
+        
+        try{
+            
+            Connection conexion = Conexion.obtener();
+            String consulta = "UPDATE alumno SET nombre = ?, apellidos = ?, idCia = ?, apodo = ? WHERE id = ?";
+            PreparedStatement statement = conexion.prepareStatement(consulta);
+            statement.setString(1, nombre);
+            statement.setString(2, apellidos);
+            statement.setString(3, idCia);
+            statement.setString(4, apodo);
+            statement.setInt(5, id);
+            statement.execute();
+            
+            resultado = statement.getUpdateCount() == 1;
+            conexion.close();
+            
+        }catch(Exception ex){
+            
+            System.err.println("Ocurrio un error: " + ex.getMessage());
+            
+        }
+        
+        return resultado;
+        
     }
     
 }
