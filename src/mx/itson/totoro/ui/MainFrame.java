@@ -19,6 +19,7 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
+        tblAlumnos.removeColumn(tblAlumnos.getColumnModel().getColumn(0));
     }
 
     /**
@@ -36,6 +37,7 @@ public class MainFrame extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         btnSAgregar = new javax.swing.JMenuItem();
         btnEditar = new javax.swing.JMenuItem();
+        btnEliminar = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -76,6 +78,14 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         jMenu1.add(btnEditar);
+
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+        jMenu1.add(btnEliminar);
 
         jMenuBar1.add(jMenu1);
 
@@ -147,6 +157,17 @@ public class MainFrame extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnEditarActionPerformed
 
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        
+        int renglon = tblAlumnos.getSelectedRow();
+       int idAlumno = Integer.parseInt( tblAlumnos.getModel().getValueAt(renglon, 0).toString());
+       
+       new Alumno().eliminar(idAlumno);
+       
+       cargarTabla();
+        
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -184,6 +205,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btnEditar;
+    private javax.swing.JMenuItem btnEliminar;
     private javax.swing.JMenuItem btnSAgregar;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;

@@ -140,7 +140,7 @@ public class Agregar extends javax.swing.JDialog {
 
             }else{
 
-                JOptionPane.showMessageDialog(this, "El registro fue exitoso", "Guardado", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "El registro fallo", "Error", JOptionPane.ERROR_MESSAGE);
                 dispose();
 
             }

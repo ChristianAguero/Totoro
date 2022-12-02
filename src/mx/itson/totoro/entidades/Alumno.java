@@ -12,6 +12,7 @@ import mx.itson.totoro.persistencia.Conexion;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -227,6 +228,46 @@ public class Alumno {
         }
         
         return resultado;
+        
+    }
+    
+    public void eliminar (int id){
+        
+        boolean resultado = false;
+        
+        String[] options = {"Si", "No"};
+        int x = JOptionPane.showOptionDialog(null, "Esta seguro que desea eliminar el registro?", "Atencion", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+        
+        if(x == 0){
+
+            try{
+
+                Connection conexion = Conexion.obtener();
+                String consulta = "DELETE FROM alumno WHERE id = ?";
+                PreparedStatement statement = conexion.prepareStatement(consulta);
+                statement.setInt(1, id);
+                statement.execute();
+
+                resultado = statement.getUpdateCount() == 1;
+                conexion.close();
+
+            }catch(Exception ex){
+
+                System.err.println("Ocurrio un error: " + ex.getMessage());
+
+            }
+            
+        }
+        
+        if(resultado){
+            
+            JOptionPane.showMessageDialog(null, "El registro se elimiino exitosamente", "Eliminado", JOptionPane.INFORMATION_MESSAGE);
+            
+        }else{
+            
+            JOptionPane.showMessageDialog(null, "El registro no se ha podido eliminar", "Error", JOptionPane.ERROR_MESSAGE);
+            
+        }
         
     }
     
